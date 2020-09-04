@@ -11,7 +11,7 @@ clear;
 N = 4; % generate 4 agents, one for the source and 3 for the following 
 
 % Matrix for the initial triangle agent positions
-initial_poses = [0.6 0.7 0.9 0; 0.6 0.2 0.8 0; 1.0 1.0 1.0 0];
+initial_poses = [0.2 0.3 0.5 0; 0.6 0.2 0.8 0; 1.0 1.0 1.0 0];
 
 r = Robotarium('NumberOfRobots', N, 'ShowFigure', true, 'InitialConditions', initial_poses);
 si_to_uni = create_si_to_uni_dynamics(); % Reference to the function for unicycle dynamic creation
@@ -23,18 +23,18 @@ source = [0 0];
 theta = pi/2;
 counter = 0; % loop counter
 graphed_infinity_points = 0;
-while graphed_infinity_points < 45 % Stops once the full infinity has been created
+while graphed_infinity_points < 38 % Stops once the full infinity has been created
 %% Calculation of Covariance Matrix, n direction
     counter = counter + 1;
     agent_source_position = x(1:2, 4)'; % position of the malicious agent 
 
-    if (mod(counter, 100) == 0) % Every 100 loop cycles
+    if (mod(counter, 50) == 0) % Every 25 loop cycles
         graphed_infinity_points = graphed_infinity_points + 1;
-        theta = theta + (1 / 6.5);
-        source = [cos(theta) cos(theta) * sin(theta)]; % Computes the location of points on the infinity based on angle
-%         if (mod(counter, 300) == 0)
-%             plot(agent_source_position(1), agent_source_position(2), 'r.','MarkerSize',5,'MarkerFaceColor','r');
-%         end
+        theta = theta + (1 / 5.5);
+        source = [1 * cos(theta), 1 *cos(theta) * sin(theta)]; % Computes the location of points on the infinity based on angle
+        if (mod(counter, 100) == 0)
+            plot(agent_source_position(1), agent_source_position(2), 'r.','MarkerSize',5,'MarkerFaceColor','r');
+        end
     end
     
     difference_vector = source - agent_source_position; % direction for the malicious agent to move in
@@ -87,8 +87,8 @@ while graphed_infinity_points < 45 % Stops once the full infinity has been creat
     end
     
 %% Calculations and Setting Velocities
-    formation_gain = 4;
-    virtual_field_gain = .18;
+    formation_gain = 8;
+    virtual_field_gain = .2;
     ref_r1 = virtual_field_gain * virtual_field_vals(1,1) * n_dir + formation_gain * rdot_formation(1,:)';
     ref_r2 = virtual_field_gain * virtual_field_vals(1,2) * n_dir + formation_gain * rdot_formation(2,:)';
     ref_r3 = virtual_field_gain * virtual_field_vals(1,3) * n_dir + formation_gain * rdot_formation(3,:)';
