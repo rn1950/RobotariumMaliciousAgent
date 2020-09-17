@@ -3,8 +3,6 @@
 % Georgia Tech Systems Research Lab
 % rnelson71@gatech.edu
 
-% Trying to get agents to move faster
-
 %% Setup and Initialization
 clc;
 clear;
@@ -23,18 +21,26 @@ source = [0 0];
 theta = pi/2;
 counter = 0; % loop counter
 graphed_infinity_points = 0;
+
+agent_source_position = x(1:2, 4)'; % position of the malicious agent 
+pos = [agent_source_position(1) agent_source_position(2) .2 .2]; 
+circle = rectangle('Position',pos,'Curvature',[1 1], 'EdgeColor','r','LineWidth',3);
+maliciousLine = animatedline('Color','#D95319','LineWidth',2);
+averageTrackerLine = animatedline('Color','g','LineWidth',2);
+
 while graphed_infinity_points < 38 % Stops once the full infinity has been created
 %% Calculation of Covariance Matrix, n direction
+    
     counter = counter + 1;
     agent_source_position = x(1:2, 4)'; % position of the malicious agent 
-
+    pos = [agent_source_position(1)-.15 agent_source_position(2)-.15 .3 .3];
+    circle.Position = pos;
+    addpoints(maliciousLine, agent_source_position(1), agent_source_position(2));
+    
     if (mod(counter, 50) == 0) % Every 25 loop cycles
         graphed_infinity_points = graphed_infinity_points + 1;
         theta = theta + (1 / 5.5);
-        source = [1 * cos(theta), 1 *cos(theta) * sin(theta)]; % Computes the location of points on the infinity based on angle
-        if (mod(counter, 100) == 0)
-            plot(agent_source_position(1), agent_source_position(2), 'r.','MarkerSize',5,'MarkerFaceColor','r');
-        end
+        source = [1.1 * cos(theta), 1.1 *cos(theta) * sin(theta)]; % Computes the location of points on the infinity based on angle
     end
     
     difference_vector = source - agent_source_position; % direction for the malicious agent to move in
@@ -54,6 +60,7 @@ while graphed_infinity_points < 38 % Stops once the full infinity has been creat
     third = x(1:2, 3)';
     position = [first; second; third];
     center = mean(position); % Finds the average position of the agents for use in covariance calculation
+    addpoints(averageTrackerLine, center(1), center(2));
     distance_from_center = position - center(ones(size(position,1),1),:);
     C = distance_from_center' * distance_from_center;
     tau=2; % Used for calculating covariance
