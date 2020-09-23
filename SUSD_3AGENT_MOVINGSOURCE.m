@@ -24,11 +24,11 @@ graphed_infinity_points = 0;
 
 agent_source_position = x(1:2, 4)'; % position of the malicious agent 
 pos = [agent_source_position(1) agent_source_position(2) .2 .2]; 
-circle = rectangle('Position',pos,'Curvature',[1 1], 'EdgeColor','r','LineWidth',3);
-maliciousLine = animatedline('Color','#D95319','LineWidth',2);
-averageTrackerLine = animatedline('Color','g','LineWidth',2);
+circle = rectangle('Position',pos,'Curvature',[1 1], 'EdgeColor','r','LineWidth',4);
+maliciousLine = animatedline('Color','#D95319','LineWidth',4);
+averageTrackerLine = animatedline('Color','g','LineWidth',4);
 
-while graphed_infinity_points < 38 % Stops once the full infinity has been created
+while graphed_infinity_points < 50 % Stops once the full infinity has been created
 %% Calculation of Covariance Matrix, n direction
     
     counter = counter + 1;
